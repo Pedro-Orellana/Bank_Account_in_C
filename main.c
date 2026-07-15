@@ -1,13 +1,18 @@
+// INCLUDES ///////////////////////////////////////
 #include <stdint.h>
 #include <stdio.h>
 
+//DEFINES //////////////////////////////
+#define NUM_ACCOUNTS 50
+
+
 // PROTOTYPES ///////////////////////////////////
-int get_initial_option();
+int get_main_menu_option();
 int check_input_is_valid(int input, uint8_t range_start, uint8_t range_end);
 void clear_input_buffer();
 
 //account functions
-void create_new_account();
+void create_new_account(int *main_menu);
 void account_login();
 void account_logout();
 void exit_program();
@@ -21,16 +26,23 @@ struct account
     float balance;
 };
 
+
+
 int main()
 {
-    int initial;
-    initial = get_initial_option();
+    printf("WELCOME!\n");
+    printf("This is the C bank app!\n");
+    printf("\n\n");
+    int main_menu;
+    main_menu = get_main_menu_option();
 
-    while(initial > 0 && initial <= 3) {
-        switch (initial)
+
+
+    while(main_menu > 0 && main_menu <= 3) {
+        switch (main_menu)
         {
         case 1:
-            create_new_account();
+            create_new_account(&main_menu);
             break;
         
         case 2:
@@ -78,12 +90,12 @@ int check_input_is_valid(int input, uint8_t range_start, uint8_t range_end) {
         clear_input_buffer();
         return 0;
     }
+    clear_input_buffer();
     return 1;
 }
 
-int get_initial_option() {
+int get_main_menu_option() {
     int ret = 0;
-    printf("This is the C bank app!\n");
     printf("Please choose an option from the following menu:\n");
     printf("1. Create a new account\n");
     printf("2. Log in to your account\n");
@@ -106,9 +118,35 @@ int get_initial_option() {
 
 
 //BANK FUNCTIONS
-void create_new_account() {
-    printf("create_new_account function\n");
+void create_new_account(int *main_menu) {
+    char full_name[20];
+    int pin_number;
+    printf("Create a new account today!\n\n");
+    printf("Please provide the following information: \n");
+    printf("Full name (no longer than 20 characters): ");
+    while(scanf("%19[^\n]", full_name) != 1) {
+        clear_input_buffer();
+        printf("Please provide a valid full name\n");
+        printf("Full name (no longer than 20 characters): ");
+    }
+    clear_input_buffer();
+    printf("Thank you, %s\n", full_name);
+    printf("Now create a pin to access your account (exactly 4 digits):\n");
+    printf("pin number: ");
+
+    while(scanf("%d", &pin_number) != 1 || pin_number < 1000 || pin_number > 9999) {
+        clear_input_buffer();
+        printf("Please provide a valid pin number\n");
+        printf("pin number: ");
+    }
+
+    clear_input_buffer();
+    printf("Going back to main menu...\n");
+    printf("\n\n");
+    *main_menu = get_main_menu_option();
 }
+
+
 void account_login() {
     printf("account_login function\n");
 }

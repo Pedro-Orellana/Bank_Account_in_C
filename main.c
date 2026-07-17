@@ -35,7 +35,7 @@ int main()
 {
     printf("WELCOME!\n");
     printf("This is the C bank app!\n");
-    printf("\n\n");
+    printf("\n");
     int main_menu;
     main_menu = get_main_menu_option();
 
@@ -104,6 +104,7 @@ int get_main_menu_option() {
     printf("2. Log in to your account\n");
     printf("3. log out from your account\n");
     printf("4. Exit the program\n");
+    printf("\n");
 
     while(!ret) {
         printf("Please type your option: ");
@@ -122,7 +123,7 @@ int get_main_menu_option() {
 
 //BANK FUNCTIONS
 void create_new_account(int *main_menu) {
-
+    printf("\n\n");
 
     if(account_index >= NUM_ACCOUNTS) {
         printf("Database is full, cannot create a new account at this moment...\n");
@@ -141,6 +142,7 @@ void create_new_account(int *main_menu) {
             printf("Full name (no longer than 20 characters): ");
         }
         clear_input_buffer();
+        printf("\n");
         printf("Thank you, %s\n", full_name);
         printf("Now create a pin to access your account (exactly 4 digits):\n");
         printf("pin number: ");
@@ -150,7 +152,7 @@ void create_new_account(int *main_menu) {
             printf("Please provide a valid pin number\n");
             printf("pin number: ");
         }
-
+        printf("\n");
         printf("Now, do you want to open an account with an intial dollar amount? (if not, enter 0)\n");
         printf("Initial amount: ");
         while(scanf("%f", &initial_amount) != 1 || initial_amount < 0) {
@@ -173,7 +175,7 @@ void create_new_account(int *main_menu) {
 
         //add struct into the "database" (the struct account array)
         accounts[account_index++] = new_account;
-    
+        printf("\n");
         printf("Congratulations! you have successfully created your new account!\n");
         printf("These are your account details:\n");
         printf("Account number: %d\n", new_account.acc_number);

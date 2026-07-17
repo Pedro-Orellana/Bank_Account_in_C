@@ -4,7 +4,7 @@
 #include <string.h>
 
 //DEFINES //////////////////////////////
-#define NUM_ACCOUNTS 50
+#define NUM_ACCOUNTS 10
 
 // PROTOTYPES ///////////////////////////////////
 int get_main_menu_option();
@@ -17,10 +17,6 @@ void account_login();
 void account_logout();
 void exit_program();
 
-
-// GLOBAL VARIABLES ////////////////////////////////////////
-static int account_number_count = 5000;
-
 // account struct
 struct account
 {
@@ -30,7 +26,10 @@ struct account
     float balance;
 };
 
-
+// GLOBAL VARIABLES ////////////////////////////////////////
+static int account_number_count = 5000;
+static int account_index = 0;
+static struct account accounts[NUM_ACCOUNTS];
 
 int main()
 {
@@ -124,59 +123,71 @@ int get_main_menu_option() {
 //BANK FUNCTIONS
 void create_new_account(int *main_menu) {
 
-    char full_name[20];
-    int pin_number;
-    float initial_amount;
 
-    printf("Create a new account today!\n\n");
-    printf("Please provide the following information: \n");
-    printf("Full name (no longer than 20 characters): ");
-    while(scanf("%19[^\n]", full_name) != 1) {
-        clear_input_buffer();
-        printf("Please provide a valid full name\n");
+    if(account_index >= NUM_ACCOUNTS) {
+        printf("Database is full, cannot create a new account at this moment...\n");
+    } else {
+
+        char full_name[20];
+        int pin_number;
+        float initial_amount;
+
+        printf("Create a new account today!\n\n");
+        printf("Please provide the following information: \n");
         printf("Full name (no longer than 20 characters): ");
-    }
-    clear_input_buffer();
-    printf("Thank you, %s\n", full_name);
-    printf("Now create a pin to access your account (exactly 4 digits):\n");
-    printf("pin number: ");
-
-    while(scanf("%d", &pin_number) != 1 || pin_number < 1000 || pin_number > 9999) {
+        while(scanf("%19[^\n]", full_name) != 1) {
+            clear_input_buffer();
+            printf("Please provide a valid full name\n");
+            printf("Full name (no longer than 20 characters): ");
+        }
         clear_input_buffer();
-        printf("Please provide a valid pin number\n");
+        printf("Thank you, %s\n", full_name);
+        printf("Now create a pin to access your account (exactly 4 digits):\n");
         printf("pin number: ");
-    }
 
-    printf("Now, do you want to open an account with an intial dollar amount? (if not, enter 0)\n");
-    printf("Initial amount: ");
-    while(scanf("%f", &initial_amount) != 1 || initial_amount < 0) {
-        clear_input_buffer();
-        printf("Please enter a valid number (or just type 0)\n");
+        while(scanf("%d", &pin_number) != 1 || pin_number < 1000 || pin_number > 9999) {
+            clear_input_buffer();
+            printf("Please provide a valid pin number\n");
+            printf("pin number: ");
+        }
+
+        printf("Now, do you want to open an account with an intial dollar amount? (if not, enter 0)\n");
         printf("Initial amount: ");
+        while(scanf("%f", &initial_amount) != 1 || initial_amount < 0) {
+            clear_input_buffer();
+            printf("Please enter a valid number (or just type 0)\n");
+            printf("Initial amount: ");
+        }
+        clear_input_buffer();
+
+        //create new account
+        struct account new_account = {
+            .acc_number = account_number_count++,
+            .pin_number = pin_number,
+            .balance = initial_amount
+        };
+
+        //copy the name obtained from scanf into the array in the struct
+        strcpy(new_account.owner, full_name);
+
+
+        //add struct into the "database" (the struct account array)
+        accounts[account_index++] = new_account;
+    
+        printf("Congratulations! you have successfully created your new account!\n");
+        printf("These are your account details:\n");
+        printf("Account number: %d\n", new_account.acc_number);
+        printf("Account owner: %s\n", new_account.owner);
+        printf("pin number: %d\n", new_account.pin_number);
+        printf("current balance: $%.2f\n", new_account.balance);
+
     }
-    clear_input_buffer();
-
-    //create new account
-    struct account new_account = {
-        .acc_number = account_number_count++,
-        .pin_number = pin_number,
-        .balance = initial_amount
-    };
-
-    //copy the name obtained from scanf into the array in the struct
-    strcpy(new_account.owner, full_name);
-
-    printf("Congratulations! you have successfully created your new account!\n");
-    printf("These are your account details:\n");
-    printf("Account number: %d\n", new_account.acc_number);
-    printf("Account owner: %s\n", new_account.owner);
-    printf("pin number: %d\n", new_account.pin_number);
-    printf("current balance: $%.2f\n", new_account.balance);
 
     printf("\n");
     printf("Going back to main menu...\n");
     printf("\n\n");
     *main_menu = get_main_menu_option();
+
 }
 
 

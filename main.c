@@ -9,7 +9,9 @@
 // PROTOTYPES ///////////////////////////////////
 int get_main_menu_option();
 int check_input_is_valid(int input, uint8_t range_start, uint8_t range_end);
+int logged_account_index(const char *full_name, int pin_number);
 void clear_input_buffer();
+
 
 //account functions
 void create_new_account(int *main_menu_option);
@@ -201,12 +203,16 @@ void account_login(int *main_menu_option) {
     printf("\n");
     if(account_index == 0) {
         printf("There are no registered accounts. Please create an account first.\n");
+        printf("\n");
         return;
     } 
 
     //get information for account here
+    int ret;
     char full_name[20];
     int pin_number;
+
+
     printf("Please provide your full name (or type \"CANCEL\" to go back): ");
     while(scanf("%19[^\n]", full_name) != 1) {
         clear_input_buffer();
@@ -215,14 +221,80 @@ void account_login(int *main_menu_option) {
     }
 
     if(strcmp(full_name, "CANCEL") == 0) {
+        clear_input_buffer();
         printf("Going back to main menu...\n");
         printf("\n");
         return;
         }
-        //implement checking logic here
+    
+    printf("\n");
+    printf("Please enter the pin number of your account (or type \"-1\" to go back): ");
 
+    // while(scanf("%d", &pin_number) != 1 || pin_number != -1 || (pin_number < 1000 && pin_number > 9999)) {
+    //     clear_input_buffer();
+    //     printf("Pin number is %d\n", pin_number);
+    //     printf("Please provide a valid pin number\n");
+    //     printf("Please enter the pin number of your account (or type \"-1\" to go back): ");
+    // }
+
+    while(true) {
+        ret = scanf("%d", &pin_number);
+        clear_input_buffer();
+        if(ret != 1) {
+            printf("Please provide a valid pin number\n");
+            printf("Please enter the pin number of your account (or type \"-1\" to go back): ");
+            continue;
+        }
+        if(pin_number == -1) {
+             printf("\n");
+            printf("Going back to main menu...\n");
+            printf("\n");
+            return;
+        }
+
+        if(pin_number < 1000 || pin_number > 9999) {
+            printf("Pin number does not comply with standards (it needs to be a 4-digit number)\n");
+            printf("Please enter the pin number of your account (or type \"-1\" to go back): ");
+            continue;
+        }
+        printf("\n");
+        break;
+    }
+
+    int index = logged_account_index(full_name, pin_number);
+
+    if(index == -1) {
+        printf("No user exists with that combination of name/pin number\n");
+        printf("\n");
+        printf("Going back to main menu...\n");
+        printf("\n");
+        return;
+    }
+
+    //show the menu of what a logged in user can do
+    printf("Successfully logged in!\n");
+    printf("Welcome back, %s\n", full_name);
+    printf("\n");
+
+    return;
 }
 
+
+int logged_account_index(const char *full_name, int pin_number) {
+    struct account current;
+    for(int i = 0; i < account_index; i ++) {
+        current = accounts[i];
+        int name_match = strcmp(full_name, current.owner);
+        if(name_match != 0){
+            continue;
+        } else {
+            if(pin_number == current.pin_number) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
 
 
 void account_logout() {

@@ -8,6 +8,7 @@
 
 // PROTOTYPES ///////////////////////////////////
 int get_main_menu_option();
+int get_user_menu_option();
 int check_input_is_valid(int input, uint8_t range_start, uint8_t range_end);
 int logged_account_index(const char *full_name, int pin_number);
 void clear_input_buffer();
@@ -124,6 +125,28 @@ int get_main_menu_option() {
     return ret;
 }
 
+int get_user_menu_option() {
+
+    int user_menu_option = 0;
+    printf("Please choose an option from the following menu:\n");
+    printf("1. Make a deposit\n");
+    printf("2. Make a withdrawal\n");
+    printf("3. Logout fron your account\n");
+    printf("Please type your option: ");
+
+    //get the input from the user
+    while(!user_menu_option) {
+        int answer = getchar();
+        if(check_input_is_valid(answer, 1, 3) != 1) {
+            printf("Please type your option: ");
+            continue;
+        }
+        user_menu_option = answer - '0';
+    }
+
+    return user_menu_option;
+}
+
 
 
 //BANK FUNCTIONS
@@ -230,12 +253,6 @@ void account_login(int *main_menu_option) {
     printf("\n");
     printf("Please enter the pin number of your account (or type \"-1\" to go back): ");
 
-    // while(scanf("%d", &pin_number) != 1 || pin_number != -1 || (pin_number < 1000 && pin_number > 9999)) {
-    //     clear_input_buffer();
-    //     printf("Pin number is %d\n", pin_number);
-    //     printf("Please provide a valid pin number\n");
-    //     printf("Please enter the pin number of your account (or type \"-1\" to go back): ");
-    // }
 
     while(true) {
         ret = scanf("%d", &pin_number);
@@ -271,12 +288,36 @@ void account_login(int *main_menu_option) {
         return;
     }
 
+ 
     //show the menu of what a logged in user can do
     printf("Successfully logged in!\n");
     printf("Welcome back, %s\n", full_name);
     printf("\n");
 
+    int user_menu_option = 0;
+    while(user_menu_option != 3) {
+
+        user_menu_option = get_user_menu_option();
+
+        switch (user_menu_option)
+        {
+        case 1:
+            printf("You selected to make a deposit!\n");
+            break;
+        
+        case 2:
+            printf("You selected to make a withdrawal!\n");
+            break;
+
+        case 3:
+            printf("You have successfully logged out of your account!\n");
+            break;
+        }
+    }
+
+    printf("Going back to main menu...\n");
     return;
+    
 }
 
 
@@ -298,7 +339,9 @@ int logged_account_index(const char *full_name, int pin_number) {
 
 
 void account_logout() {
-    printf("account_logout function\n");
+    printf("\n");
+    printf("You have successfully logged out of your account!\n");
+    printf("\n");
 }
 void exit_program() {
     printf("Thank you for using the C bank app!\n");

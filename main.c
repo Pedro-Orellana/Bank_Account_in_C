@@ -312,12 +312,13 @@ void account_login(int *main_menu_option) {
             break;
 
         case 3:
-            printf("You have successfully logged out of your account!\n");
+            account_logout();
             break;
         }
     }
 
     printf("Going back to main menu...\n");
+    printf("\n");
     return;
     
 }
@@ -341,6 +342,7 @@ int logged_account_index(const char *full_name, int pin_number) {
 
 void make_deposit(int account_index) {
     float amount = 0;
+    printf("\n");
     printf("Make a deposit to your account!\n");
     printf("\n");
     printf("Type the amount you want to deposit: ");

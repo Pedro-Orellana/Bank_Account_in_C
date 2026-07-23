@@ -304,12 +304,10 @@ void account_login(int *main_menu_option) {
         switch (user_menu_option)
         {
         case 1:
-            printf("You selected to make a deposit!\n");
             make_deposit(index);
             break;
         
         case 2:
-            printf("You selected to make a withdrawal!\n");
             make_withdrawal(index);
             break;
 
@@ -342,10 +340,25 @@ int logged_account_index(const char *full_name, int pin_number) {
 }
 
 void make_deposit(int account_index) {
+    float amount = 0;
     printf("Make a deposit to your account!\n");
     printf("\n");
     printf("Type the amount you want to deposit: ");
+    while(scanf("%f", &amount) != 1 || amount < 0) {
+        clear_input_buffer();
+        printf("Please type a amount (it has to be a number greater than 0)\n");
+        printf("Type the amount you want to deposit: ");
+    }
+    clear_input_buffer();
 
+    //make the deposit
+    struct account *user_account = &accounts[account_index];
+    user_account->balance += amount;
+
+    //show the user the new amount
+    printf("Deposit is successful!\n");
+    printf("Your new balance: %.2f\n", user_account->balance);
+    printf("\n");
 }
 
 void make_withdrawal(int account_index) {

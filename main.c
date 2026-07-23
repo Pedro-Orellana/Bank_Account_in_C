@@ -17,6 +17,8 @@ void clear_input_buffer();
 //account functions
 void create_new_account(int *main_menu_option);
 void account_login(int *main_menu_option);
+void make_deposit(int account_index);
+void make_withdrawal(int account_index);
 void account_logout();
 void exit_program();
 
@@ -303,10 +305,12 @@ void account_login(int *main_menu_option) {
         {
         case 1:
             printf("You selected to make a deposit!\n");
+            make_deposit(index);
             break;
         
         case 2:
             printf("You selected to make a withdrawal!\n");
+            make_withdrawal(index);
             break;
 
         case 3:
@@ -335,6 +339,19 @@ int logged_account_index(const char *full_name, int pin_number) {
         }
     }
     return -1;
+}
+
+void make_deposit(int account_index) {
+    printf("Make a deposit to your account!\n");
+    printf("\n");
+    printf("Type the amount you want to deposit: ");
+
+}
+
+void make_withdrawal(int account_index) {
+    printf("Make a withdrawal from your account!\n");
+    printf("\n");
+    printf("Enter the amount you want to withdraw: ");
 }
 
 

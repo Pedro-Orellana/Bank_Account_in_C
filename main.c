@@ -364,9 +364,53 @@ void make_deposit(int account_index) {
 }
 
 void make_withdrawal(int account_index) {
+    //get the user account
+    struct account *user_account = &accounts[account_index];
+
+    float amount;
+
     printf("Make a withdrawal from your account!\n");
     printf("\n");
     printf("Enter the amount you want to withdraw: ");
+
+    while(scanf("%f", &amount) != 1 || amount < 0) {
+        clear_input_buffer();
+        printf("Please enter a valid amount\n");
+        printf("Enter the amount you want to withdraw: ");
+    }
+    clear_input_buffer();
+
+    if(amount > user_account->balance) {
+        int answer = 0;
+        printf("You are requesting to withdraw more than you have in your account\n");
+        printf("You want to withdraw: $%.2f\n", amount);
+        printf("Your current balance: $%.2f\n", user_account->balance);
+
+        printf("Would you like to withdraw $%.2f instead? y/n ", user_account->balance);
+        while((answer = getchar()) != 'y' && answer != 'n') {
+            clear_input_buffer();
+            printf("Please enter either a 'y' for yes or 'n' for no: ");
+        }
+
+        if(answer == 'y') {
+            //withdraw all the money in the account
+            user_account->balance = 0;
+        } else {
+            printf("You decided not to make any withdrawals today\n");
+            printf("\n");
+            printf("Going back to main menu...\n");
+            return;
+        }
+    } else {
+        //make withdrawal
+        user_account->balance -= amount;
+    }
+
+        printf("Withdrawal successful!\n");
+        printf("Please take your money!\n");
+        printf("\n");
+        printf("Current balance: $%.2f\n", user_account->balance);
+
 }
 
 

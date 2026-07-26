@@ -369,6 +369,7 @@ void make_withdrawal(int account_index) {
 
     float amount;
 
+    printf("\n");
     printf("Make a withdrawal from your account!\n");
     printf("\n");
     printf("Enter the amount you want to withdraw: ");
@@ -379,6 +380,7 @@ void make_withdrawal(int account_index) {
         printf("Enter the amount you want to withdraw: ");
     }
     clear_input_buffer();
+    printf("\n");
 
     if(amount > user_account->balance) {
         int answer = 0;
@@ -391,26 +393,29 @@ void make_withdrawal(int account_index) {
             clear_input_buffer();
             printf("Please enter either a 'y' for yes or 'n' for no: ");
         }
+        clear_input_buffer();
 
         if(answer == 'y') {
             //withdraw all the money in the account
             user_account->balance = 0;
         } else {
+            printf("\n");
             printf("You decided not to make any withdrawals today\n");
             printf("\n");
             printf("Going back to main menu...\n");
+            printf("\n");
             return;
         }
     } else {
         //make withdrawal
         user_account->balance -= amount;
     }
-
+        printf("\n");
         printf("Withdrawal successful!\n");
         printf("Please take your money!\n");
         printf("\n");
         printf("Current balance: $%.2f\n", user_account->balance);
-
+        printf("\n");
 }
 
 

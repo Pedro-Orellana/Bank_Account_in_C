@@ -205,6 +205,7 @@ void create_new_account(int *main_menu_option) {
     accounts[account_index++] = new_account;
     printf("\n");
     printf("Congratulations! you have successfully created your new account!\n");
+    printf("\n");
     printf("These are your account details:\n");
     printf("Account number: %d\n", new_account.acc_number);
     printf("Account owner: %s\n", new_account.owner);
@@ -420,6 +421,7 @@ void account_logout() {
     printf("\n");
 }
 void exit_program() {
+    printf("\n");
     printf("Thank you for using the C bank app!\n");
     printf("Goodbye!\n");
 }

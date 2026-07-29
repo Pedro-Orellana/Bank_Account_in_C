@@ -44,7 +44,7 @@ int main()
 
     
     int main_menu_option;
-    while(main_menu_option != 4) {
+    while(main_menu_option != 3) {
         main_menu_option = get_main_menu_option();
 
         switch (main_menu_option)
@@ -58,10 +58,6 @@ int main()
             break;
         
         case 3:
-            account_logout();
-            break;
-        
-        case 4:
             exit_program();
             break;
         }
@@ -110,14 +106,13 @@ int get_main_menu_option() {
     printf("Please choose an option from the following menu:\n");
     printf("1. Create a new account\n");
     printf("2. Log in to your account\n");
-    printf("3. log out from your account\n");
-    printf("4. Exit the program\n");
+    printf("3. Exit the program\n");
     printf("\n");
 
     while(!ret) {
         printf("Please type your option: ");
         int answer = getchar();
-        int check = check_input_is_valid(answer, 1, 4);
+        int check = check_input_is_valid(answer, 1, 3);
         if(check > 0) {
             ret = (answer - '0');
         }
